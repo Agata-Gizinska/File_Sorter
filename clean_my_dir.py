@@ -1,7 +1,11 @@
 #!/usr/bin/python3
 
-"""Run this program in a prompted directory that needs cleaning up. The
-program sorts files according to its file format."""
+"""Run this program in a specified directory that needs cleaning up. The
+program parses arguments from the terminal to get the path to a specified
+directory and scans all files in that directory. The program checks each file's
+suffix with the dictionary of file formats, creates a new folder for the
+specified file format if necessary and moves the file according to its format
+into an appropriate directory. The program does not sort subdirectories."""
 
 import os
 import argparse
@@ -38,24 +42,24 @@ File_Format_Dictionary = {
 
 
 def main():
-    """The main function of the program. It scans all files in the prompted
-    directory, checks each file suffix with a dictionary of file formats and
-    creates a new directory for specified file formats."""
-
-    parser = argparse.ArgumentParser(description='Provide directory path')
+    parser = argparse.ArgumentParser()
     parser.add_argument('dir', type=str, help='Directory path')
     args = parser.parse_args()
-
-    os.chdir(args.dir)
-    for entry in os.scandir():
+    # Get an absolute path to the directory to clean up
+    abs_dir_path = Path(args.dir).resolve()
+    for entry in os.scandir(abs_dir_path):
+        # Ignore already existing directories
         if entry.is_dir():
             continue
         file_path = Path(entry)
         file_format = file_path.suffix.lower()
         if file_format in File_Format_Dictionary:
-            directory_path = Path(File_Format_Dictionary[file_format])
-            directory_path.mkdir(exist_ok=True)
-            file_path.rename(directory_path.joinpath(file_path))
+            # Create the destination directory
+            destination_dir = Path(abs_dir_path.joinpath
+                                   (File_Format_Dictionary[file_format]))
+            destination_dir.mkdir(exist_ok=True)
+            # Move the file into the destination directory
+            file_path.rename(destination_dir.joinpath(entry.name))
 
 
 if __name__ == "__main__":

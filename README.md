@@ -4,9 +4,11 @@ Let this program sort your files according to their file format!
 
 ## General info
 
-This program scans a prompted directory and checks all files in it according 
-to their file format. Each file (with valid format) is moved into an 
-appropriate folder according to the category of the file.
+This program parses arguments from the terminal to get the path to a specified
+directory and scans all files in that directory. The program checks each file's
+suffix with the dictionary of file formats, creates a new folder for the
+specified file format if necessary and moves the file according to its format
+into an appropriate directory. The program does not sort subdirectories.
 
 Categories:
 - HTML
@@ -27,10 +29,10 @@ Categories:
 
 ## Usage
 
-Using the terminal run the program and provide a path to the directory as an
-argument:
+Using the terminal run the program and provide a path to the directory as 
+a parameter:
 
-```python clean_my_dir.py '\path\to\directory'```
+```python clean_my_dir.py "/path/to/directory"```
 
 ### Example usage:
 
@@ -39,6 +41,6 @@ this repository.
 
 Run the program using the terminal:
 
-```python clean_my_dir.py '.\test_files'```
+```python clean_my_dir.py "./test_files"```
 
 Enjoy a well-organized directory!
