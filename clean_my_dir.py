@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 
-"""Run this program in a directory that needs cleaning up. The program sorts
-files according to its file format."""
+"""Run this program in a prompted directory that needs cleaning up. The
+program sorts files according to its file format."""
 
 import os
+import argparse
 from pathlib import Path
 
 Directories = {
@@ -37,10 +38,16 @@ File_Format_Dictionary = {
 
 
 def main():
-    """The main function of the program. It scans all files in the current
+    """The main function of the program. It scans all files in the prompted
     directory, checks each file suffix with a dictionary of file formats and
     creates a new directory for specified file formats."""
-    for entry in os.scandir('.'):
+
+    parser = argparse.ArgumentParser(description='Provide directory path')
+    parser.add_argument('dir', type=str, help='Directory path')
+    args = parser.parse_args()
+
+    os.chdir(args.dir)
+    for entry in os.scandir():
         if entry.is_dir():
             continue
         file_path = Path(entry)
